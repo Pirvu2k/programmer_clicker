@@ -1,0 +1,174 @@
+<head>
+  <title>Programmer Clicker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Programmer Clicker" />
+<meta property="og:url" content="http://programmerclicker.meteor.com" />
+<meta property="og:image" content="http://programmerclicker.meteor.com/img/logo.png" />
+<meta property="og:description" content="Programmer Clicker, a Cookie-Clicker like game where you can code with clicks!" />
+<link rel="shortcut icon" href="img/logo.png">
+</head>
+
+<body>
+{{> nav}}
+<div class="container">
+  {{> hello}}
+  {{> footer}}
+</div>
+</body>
+
+<template name="hello">
+  <div class="row">
+    <div class="span2">
+      <img src="img/logo.png" style="width:150px;height:150px;float:left;" />
+    </div>
+    <div class="span6">
+      {{#if currentUser}}
+        <div class="container" style="margin-left:10px;margin-top:40px;">
+          <p class="desc"> Welcome to Programmer Clicker! You are a young , talented programmer on the hunt for success. </p>
+          <p class="desc"> Your goal is to generate as much revenue as you can, while constantly evolving your business. </p>
+          <p class="desc"> Remember, there are other programmers out there, your goal is tobecome the best! </p>
+        </div>
+      {{else}}
+        <div class="container">
+          <p class="desc"> Please log-in (top-right corner) to begin your journey as a programmer. </p>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+
+  <h2> You ({{user.username}}{{currentUser.services.facebook.name}})  have ${{formatCurrency user.money}} and make ${{formatCurrency user.rate}} per second! </h2>
+<div class="row">
+    <div class="col-lg-4">
+      {{#if currentUser}}
+      <button  class="code btn btn-success span4"  > <i class="fa fa-code"></i> Write line of Code (+$50) </button>
+      {{else}}
+      <button  class="code btn btn-success span4 disabled" > <i class="fa fa-code"></i> Write line of Code (+$50) </button>
+      {{/if}}
+    </div>
+  {{#each items}}
+    <div class="col-lg-4">
+      {{#if currentUser}}
+      <button  class="buy btn btn-default span4" id="{{cost}}" name="{{kw}}"><i class="fa fa-{{icon}}"></i> {{name}} (-${{formatCurrency cost}}) {{formatCurrency dps}} $/s </button>
+      {{else}}
+      <button  class="buy btn btn-default span4 disabled" id="{{cost}}" name="{{kw}}" data-tooltip="You must log-in to play."><i class="fa fa-{{icon}}"></i> {{name}} (-${{cost}}) {{dps}} $/s</button>
+      {{/if}}
+    </div>
+  {{/each}}
+
+
+</div>
+<br>
+<div class="row">
+  <div class="col-md-2 col-md-offset-2">
+    <ul class="list-group">
+      <li class="list-group-item list-group-item-success" >
+        <span class="badge" style="background-color:#3c763d;color:#fff; ">{{currentUser.lines}}</span>
+          Lines of code
+      </li>
+      <li class="list-group-item">
+        <span class="badge">{{currentUser.courses}}</span>
+          Courses
+      </li>
+      <li class="list-group-item">
+        <span class="badge">{{currentUser.jprog}}</span>
+          Junior programmers
+      </li>
+      <li class="list-group-item">
+        <span class="badge">{{currentUser.market}}</span>
+          Marketing Professionals
+      </li>
+      <li class="list-group-item">
+        <span class="badge">{{currentUser.law}}</span>
+          Lawyers
+      </li>
+      <li class="list-group-item">
+        <span class="badge">{{currentUser.team}}</span>
+          Teams of l33t c0d3rz
+      </li>
+      </ul>
+    </div>
+    <div class="col-md-2 col-md-offset-2">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <span class="badge">{{currentUser.tm}}</span>
+            Products Trademarked
+        </li>
+        <li class="list-group-item">
+          <span class="badge">{{currentUser.ad}}</span>
+            Ad companies
+        </li>
+        <li class="list-group-item">
+          <span class="badge">{{currentUser.inc}}</span>
+            Incubators rented
+        </li>
+        <li class="list-group-item">
+          <span class="badge">{{currentUser.serv}}</span>
+            Reliable servers
+        </li>
+        <li class="list-group-item">
+          <span class="badge">{{currentUser.hq}}</span>
+            Headquarters
+        </li>
+        <li class="list-group-item">
+          <span class="badge">{{currentUser.comp}}</span>
+            Companies
+        </li>
+      </ul>
+    </div>
+</div>
+
+<a href="#" style="text-decoration:none;color:black;"><h3 style="font-size:24px;" id="ldb"> Leaderboard <i class="fa fa-reorder"></i></h3></a>
+
+
+<table class="leaderboard table table-striped" style="display:none">
+  <thead>
+    <th>Username</th><th>Money</th><th>$/Second </th>
+  </thead>
+  {{#each players}}
+    {{> player}}
+  {{/each}}
+</table>
+
+<br>
+</template>
+
+<template name="player">
+
+  <tr class="player">
+    <td class="name">{{username}}{{services.facebook.name}} </td>
+    <td class="money">${{formatCurrency money}}</td>
+    <td class="rate">{{formatCurrency rate}} $/s</td>
+  </tr>
+
+</template>
+
+<template name="nav">
+  <div class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+      <h1 id="head" class="navbar-brand"><i class="fa fa-terminal"></i> Programmer Clicker</h1>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right" style="margin-top:30px;">
+            {{#if currentUser.services.facebook.name}}
+              <h4>{{currentUser.services.facebook.name}}</h4>
+              <button id="logout" class="btn btn-default">Logout</button>
+              {{else}}
+                {{> loginButtons }} <!-- here -->
+             {{/if}}
+        </ul>
+    </div>
+  </div>
+</template>
+
+<template name="footer">
+
+
+  <div class="alert alert-success" role="alert"><i class="fa fa-copyright"></i> Mihai Pirvulet. Powered by <a href="http://www.meteor.com" target="_blank">Meteor</a> & <a href="http://www.fomrad.com" target="_blank">Fomrad</a>.</div>
+
+</template>

@@ -1,0 +1,4 @@
+- company registering ( 100k , allows tier 2 stuff)
+- upgrades
+- more income options ( fix bugs , open source )
+- buy company ( increasing price , last company able to be bought being google for around 50 billion)
